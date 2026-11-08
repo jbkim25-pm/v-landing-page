@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>서식 모음집 내려받기 · VisiTrace</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  /* 구글폼 제출 완료 화면(확인 메시지)과 안내 메일에서만 이 페이지로 연결합니다. 랜딩 페이지에는 링크가 없습니다. */
+  :root {
+    --plum: #67346b;
+    --plum-dark: #32253b;
+    --plum-soft: #f4eef5;
+    --ink: #232323;
+    --text: #4a4550;
+    --muted: #7a7380;
+    --white: #ffffff;
+    --line: #ece8ef;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 40px 16px; background: var(--plum-soft); color: var(--text);
+    font-family: "Pretendard", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; font-size: 17px; line-height: 1.7;
+  }
+  .card {
+    width: 100%; max-width: 560px; background: var(--white); border: 1px solid var(--line);
+    border-radius: 25px; padding: 48px 40px; text-align: center;
+  }
+  .logo { color: var(--plum); font-weight: 700; font-size: 20px; text-decoration: none; }
+  .pill {
+    display: inline-block; margin: 28px 0 16px; padding: 6px 16px; border-radius: 999px;
+    background: var(--plum-soft); color: var(--plum-dark); font-size: 14px; font-weight: 600;
+  }
+  h1 { margin: 0; color: var(--ink); font-size: 26px; font-weight: 600; line-height: 1.4; letter-spacing: -0.02em; }
+  p { margin: 16px 0 0; }
+  .btn {
+    display: inline-block; margin-top: 32px; padding: 16px 32px; border-radius: 999px;
+    background: var(--plum); color: var(--white); font-weight: 600; text-decoration: none;
+  }
+  .btn:hover { background: var(--plum-dark); }
+  .note { margin-top: 24px; color: var(--muted); font-size: 14.5px; }
+  .back { display: inline-block; margin-top: 28px; color: var(--plum); font-size: 15px; }
+  @media (max-width: 480px) {
+    .card { padding: 36px 22px; }
+    h1 { font-size: 22px; }
+    .btn { display: block; }
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+    <a class="logo" href="./">VisiTrace</a>
+    <div><span class="pill">무료 자료</span></div>
+    <h1>설문에 참여해 주셔서 감사합니다</h1>
+    <p>「2026년 장기요양기관 운영 관련 서식 모음집」을 내려받으세요.</p>
+    <a class="btn" href="files/2026-ltc-forms.hwp" download="2026년_장기요양기관_운영_관련_서식_모음집.hwp">서식 모음집 내려받기 (HWP)</a>
+    <p class="note">한글(HWP) 파일입니다. 휴대폰에서 열리지 않으면 PC의 한글 프로그램이나 한컴오피스 뷰어로 열어 주세요.</p>
+    <a class="back" href="./">VisiTrace 소개로 돌아가기</a>
+  </main>
+</body>
+</html>
