@@ -94,6 +94,14 @@
   .hero .quote { margin-top: 14px; font-size: 17px; color: #d9cfe0; line-height: 1.65; }
   .hero-card .btn { margin-top: 30px; background: #ece6f0; color: var(--plum-dark); }
   .hero-card .btn:hover { background: var(--white); }
+  .hero-card .btn-download {
+    display: flex; width: fit-content; max-width: 100%; margin-top: 14px;
+    background: transparent; color: #e3c9e8; border: 1px dashed rgba(227,201,232,.55);
+  }
+  .hero-card .btn-download[aria-disabled="true"] { cursor: not-allowed; opacity: .6; }
+  .hero-card .btn-download[aria-disabled="true"]:hover { background: transparent; transform: none; }
+  .hero-card .btn-download.is-open { background: var(--white); color: var(--plum-dark); border: 1px solid var(--white); opacity: 1; }
+  .hero-card .btn-download.is-open:hover { background: var(--plum-soft); }
   .pain {
     list-style: none; margin: 0; padding: 30px 32px; border-radius: 22px; background: rgba(255,255,255,.06);
     display: grid; gap: 14px; font-size: 16.5px; color: #e4dcea;
@@ -270,7 +278,11 @@
           <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSflSXuCq2T_GaO7z7cuYjDzRzJALkZSiiTlga3UZpgkpwwtgA/viewform" target="_blank" rel="noopener">무료 서식 받기
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
           </a>
-          <p class="btn-note">설문을 제출하면 완료 화면과 이메일로 내려받기 링크를 드립니다.</p>
+          <!-- 설문 완료 후 열리는 버튼: 구글폼 확인 메시지의 링크(?form=done)로 돌아오면 열립니다. -->
+          <a class="btn btn-download" id="formsDownload" aria-disabled="true">2026년 장기요양기관 운영 관련 서식 모음집 다운 받기
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6 10l6 6 6-6M5 20h14"/></svg>
+          </a>
+          <p class="btn-note" id="formsDownloadNote">설문을 완료하면 위 다운 받기 버튼이 열립니다.</p>
         </div>
         <ul class="pain">
           <li class="pain-title">여러 어르신 방문을 마치고, 사무실에 돌아와 기록지를 몰아서 쓰고 계신가요?</li>
@@ -444,7 +456,7 @@
       <a class="btn light" href="https://docs.google.com/forms/d/e/1FAIpQLSflSXuCq2T_GaO7z7cuYjDzRzJALkZSiiTlga3UZpgkpwwtgA/viewform" target="_blank" rel="noopener">무료 서식 받기
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M8 7h9v9"/></svg>
       </a>
-          <p class="btn-note">설문을 제출하면 완료 화면과 이메일로 내려받기 링크를 드립니다.</p>
+          <p class="btn-note">설문을 완료하면 첫 화면의 다운 받기 버튼이 열립니다.</p>
     </div>
   </section>
 
@@ -466,6 +478,44 @@
       entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
     }, { threshold: 0.12 });
     items.forEach(function (el) { io.observe(el); });
+  })();
+
+  // 설문을 마치고 구글폼 확인 메시지의 링크(?form=done)로 돌아오면 서식 모음집 다운 받기 버튼이 열립니다.
+  // 한 번 열리면 이 브라우저에서는 계속 열려 있고, 처음 열어 둔 다른 탭의 버튼도 함께 열립니다.
+  (function () {
+    var KEY = 'visitrace_form_done';
+    var FILE = 'files/2026-ltc-forms.hwp';
+    var FILE_NAME = '2026년_장기요양기관_운영_관련_서식_모음집.hwp';
+    var btn = document.getElementById('formsDownload');
+    var note = document.getElementById('formsDownloadNote');
+    if (!btn) return;
+
+    function unlock() {
+      btn.setAttribute('href', FILE);
+      btn.setAttribute('download', FILE_NAME);
+      btn.setAttribute('aria-disabled', 'false');
+      btn.classList.add('is-open');
+      if (note) note.textContent = '설문에 참여해 주셔서 감사합니다. 지금 내려받으실 수 있습니다.';
+    }
+    function remember() { try { localStorage.setItem(KEY, '1'); } catch (e) {} }
+    function remembered() { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; } }
+
+    btn.addEventListener('click', function (e) {
+      if (btn.getAttribute('aria-disabled') === 'true') e.preventDefault();
+    });
+
+    var params = new URLSearchParams(location.search);
+    if (params.get('form') === 'done') {
+      remember();
+      unlock();
+      history.replaceState(null, '', location.pathname + location.hash);
+    } else if (remembered()) {
+      unlock();
+    }
+
+    window.addEventListener('storage', function (e) {
+      if (e.key === KEY && e.newValue === '1') unlock();
+    });
   })();
 </script>
 </body>
